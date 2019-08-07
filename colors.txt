@@ -4,4 +4,5 @@ orange
 pink
 white
 black
+gray
 
