@@ -1,0 +1,184 @@
+Today 8/6/2019
+We will talk about git.
+Agenda:
+    git add . | to stage files, and later to commit them.
+    git commit -m "message to describe your changes"
+    commit will take a snapshot of your project.
+    If you don't put -m for message, you will see vim/vi terminal editor,
+    which is like sublime without interface. And anyway you will enter message.
+    git push - to send your code to the remote repository. We are using github,
+    and this our remote repository.
+    If you forgot remote repository location, you can execute command:
+    git remote -v
+origin  https://github.com/CybertekSchool/OnlineMyFirstgitProject.git (fetch)
+origin  https://github.com/CybertekSchool/OnlineMyFirstgitProject.git (push)
+If you changed a file, and someone else changed the same and that person
+committed that file before you - you will have a problem. At this point
+you cannot pull or commit.
+
+Studio-Mac:MyFirstGitProject cybertekstudio$ git pull
+remote: Enumerating objects: 5, done.
+remote: Counting objects: 100% (5/5), done.
+remote: Compressing objects: 100% (2/2), done.
+remote: Total 3 (delta 1), reused 0 (delta 0), pack-reused 0
+Unpacking objects: 100% (3/3), done.
+From https://github.com/CybertekSchool/OnlineMyFirstgitProject
+   5f5230d..ac51901  master     -> origin/master
+Updating 5f5230d..ac51901
+error: Your local changes to the following files would be overwritten by merge:
+        colors.txt
+Please commit your changes or stash them before you merge.
+Aborting
+First solution is to stash changes. That means you can save them and
+revert to the previous version.
+Studio-Mac:MyFirstGitProject cybertekstudio$
+git stash save "added yellow color" - to stash changes
+Saved working directory and index state On master: added yellow color
+Message is for your convenience in order to understand what was there.
+git stash list - will show you history of stashes.
+Why? Because we can use it later.
+blue
+red
+orange
+<<<<<<< Updated upstream
+pink
+=======
+yellow
+>>>> Stashed changes
+blue
+red
+orange
+pink
+yellow
+git add .
+git commit -m "update"
+git push
+Studio-Mac:MyFirstGitProject cybertekstudio$ git add colors.txt
+Studio-Mac:MyFirstGitProject cybertekstudio$ git commit -m "added white color"
+[master a4d1ad7] added white color
+ 1 file changed, 2 insertions(+), 1 deletion(-)
+Studio-Mac:MyFirstGitProject cybertekstudio$ git push
+To https://github.com/CybertekSchool/OnlineMyFirstgitProject.git
+ ! [rejected]        master -> master (fetch first)
+error: failed to push some refs to
+'https://github.com/CybertekSchool/OnlineMyFirstgitProject.git'
+hint: Updates were rejected because the remote contains work that you do
+hint: not have locally. This is usually caused by another repository pushing
+hint: to the same ref. You may want to first integrate the remote changes
+hint: (e.g., 'git pull ...') before pushing again.
+hint: See the 'Note about fast-forwards' in 'git push --help' for details.
+Then you have this:
+blue
+red
+orange
+pink
+<<<<<<< HEAD
+white
+=======
+black
+>>>>>>> e8ea2f0a6ae0b57e464425da717c78de0361f245
+We are manually merging code/text in this file.
+<<<<<<< HEAD - this is our difference
+white
+=======
+=======
+black
+>>>>>>> e8ea2f0a6ae0b57e464425da717c78de0361f245 - github difference
+blue
+red
+orange
+pink
+white
+black
+And then we have to commit code again.
+git add colors.txt
+git commit -m "merged changes"
+git push
+In this case, you cannot merge automatically.
+Intellij has a tool to resolve conflicts. It's very helpful
+when you have a lot of conflicting files.
+##############################
+blue
+red
+orange
+pink
+white
+black
+grey
+####
+green
+<<<<<<< Updated upstream
+Amber
+Black coffee
+=======
+###
+####
+English lavender
+######
+>>>>>>> Stashed changes
+Git will show us changes that we stashed and changes that we pulled.
+In order to resolve this issue we can manually select text/code
+that we would like to leave in conflicting file.
+Once we manually combined changes from stashed file and file
+that we have in project, we can commit project again.
+git add .
+git commit -m "some message that describes changes"
+git push
+###############
+git stash save “message”
+git pull
+git stash pop
+git add .  or git add src
+git commit -m “message’
+git push
+###############
+I added a new file to my project and trying commit these changes to github.
+And someone else committed also a new file.
+Guess what happens when you are trying to push without pull? - conflict
+Studio-Mac:MyFirstGitProject cybertekstudio$ git push
+To https://github.com/CybertekSchool/OnlineMyFirstgitProject.git
+ ! [rejected]        master -> master (fetch first)
+error: failed to push some refs to
+'https://github.com/CybertekSchool/OnlineMyFirstgitProject.git'
+hint: Updates were rejected because the remote contains work that you do
+hint: not have locally. This is usually caused by another repository pushing
+hint: to the same ref. You may want to first integrate the remote changes
+hint: (e.g., 'git pull ...') before pushing again.
+hint: See the 'Note about fast-forwards' in 'git push --help' for details.
+
+In this case we have to pull first, then you will see this window:
+Merge branch 'master' of
+https://github.com/CybertekSchool/OnlineMyFirstgitProject
+
+# Please enter a commit message to explain why this merge is necessary,
+# especially if it merges an updated upstream into a topic branch.
+#
+# Lines starting with '#' will be ignored, and an empty message aborts
+# the commit.
+~
+~
+~
+~
+~
+~
+~
+~
+"~/IdeaProjects/MyFirstGitProject/.git/MERGE_MSG" 7L, 310C
+This window (vim/vi editor) indicates that you can auto merge code.
+just click esc
+type :q
+and hit enter
+###################
+After these steps your code will be successfully merged automatically.
+###### If you want to reset your code
+git merge origin/master
+git rebase origin/master
+or you if you want to change to the state when it was last committed
+git reset --hard
+##################
+What's the difference between pull and fetch?
+fetch will take changes from remote repository and bring it to the local
+git repository. But, not yet to your working directory. In order to get
+these downloaded changes from local repository to the project itself
+we need to run command git merge.
+pull is the same as fetch and then merge
